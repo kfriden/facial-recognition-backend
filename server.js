@@ -14,7 +14,7 @@ const database = {
             id: '123',
             name: 'Trixie',
             email: 'trixie99@gmail.com',
-            password: 'cookies',
+            password: 'cookie',
             entries: 0,
             joined: new Date()
         },
@@ -81,7 +81,7 @@ app.get('/profile/:id', (req, res) => {
     })
     if (!found) {
         res.status(400).json('Not found');
-    }
+    } 
 })
 
 app.put('/image', (req, res) => {
