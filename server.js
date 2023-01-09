@@ -74,7 +74,7 @@ app.post('/register', (req, res) => {
             name: name,
             joined: new Date()
         }).then(user => {
-            res.json(user[1]);
+            res.json(user[0]);
         })
         .catch(err => res.status(400).json('Unable to register'))
     })
