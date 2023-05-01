@@ -81,31 +81,29 @@ app.post('/register', (req, res) => {
 
 app.get('/profile/:id', (req, res) => {
     const { id } = req.params;
-    let found = false;
-    database.users.forEach(user => {
-        if (user.id === id) {
-            found = true;
-            return res.json(user);
-        } 
+    db.select('*').from('users').where({
+        id: id
     })
-    if (!found) {
-        res.status(400).json('Not found');
-    } 
+    .then(user => {
+        if(user.length) {
+            res.json(user[0])
+        } else {
+            res.status(400).json('Not found!')
+        }
+        
+    })
+    .catch(err => res.status(400).json('Not found!'))
 })
 
 app.put('/image', (req, res) => {
     const { id } = req.body;
-    let found = false;
-    database.users.forEach(user => {
-        if (user.id === id) {
-            found = true;
-            user.entries++
-            return res.json(user.entries);
-        } 
+    db('users').where('id', '=', id)
+    .increment('entries', 1)
+    .returning('entries')
+    .then(entries => {
+        res.json(entries[0]);
     })
-    if (!found) {
-        res.status(400).json('Not found');
-    }
+    .catch(err => res.status(400).json('Unable to get count'))
 })
 
 
